@@ -3,7 +3,7 @@ import numpy as np
 import os
 from sklearn.cluster import KMeans
 
-# Clustering 11labs speaker embeddings
+print("Loading embeddings...")
 
 folder_path = "embedding"
 embeddings = []
@@ -17,11 +17,18 @@ for file in file_list:
             embeddings.append(data)
             file_names.append(file)
 
+print(f"Loaded {len(file_names)} files.")
+
 embeddings = np.vstack(embeddings)
-kmeans = KMeans(n_clusters=10, random_state=42, n_init=10)
+print("Embeddings stacked.")
+
+kmeans = KMeans(n_clusters=2000, random_state=42, n_init=10)
 labels = kmeans.fit_predict(embeddings)
+print("Clustering complete.")
 
 cluster_mapping = dict(zip(file_names, labels))
 
 with open("cluster_mapping.pkl", "wb") as f:
     pickle.dump(cluster_mapping, f)
+
+print("Cluster mapping saved as 'cluster_mapping.pkl'.")
